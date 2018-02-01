@@ -8,13 +8,17 @@
 
 import UIKit
 
-class PhotosViewController: UIViewController {
+class PhotosViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
   
-    // Property to store posts
+  @IBOutlet weak var tableView: UITableView!
+  
+  // Property to store posts
     var posts: [[String: Any]] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.delegate = self
+        tableView.dataSource = self
 
         // Do any additional setup after loading the view.
         // Network request snippet
@@ -38,6 +42,17 @@ class PhotosViewController: UIViewController {
           }
         }
         task.resume()
+    }
+  
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+      return 5
+    }
+  
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+      let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
+      cell.textLabel?.text = "This is row \(indexPath.row)"
+      
+      return cell
     }
 
     override func didReceiveMemoryWarning() {

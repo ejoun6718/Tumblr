@@ -22,7 +22,7 @@ class PhotoCell: UITableViewCell {
     }
   
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-      let cell = tableView.dequeueReusableCell(withIdentifier: "YourCustomCell") as! YourCustomCell
+      let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoCell") as! PhotoCell
       
       // Configure YourCustomCell using the outlets that you've defined.
       
