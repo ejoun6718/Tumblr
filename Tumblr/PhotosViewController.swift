@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AlamofireImage
 
 class PhotosViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
   
@@ -19,6 +20,7 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        self.tableView.rowHeight = 200
 
         // Do any additional setup after loading the view.
         // Network request snippet
@@ -39,18 +41,35 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
             self.posts = responseDictionary["posts"] as! [[String: Any]]
             
             // TODO: Reload the table view
+            self.tableView.reloadData()
           }
         }
         task.resume()
     }
   
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-      return 5
+      return posts.count
     }
   
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
       cell.textLabel?.text = "This is row \(indexPath.row)"
+      
+      // Get the post that corresponds to a particular cell's row
+      let post = posts[indexPath.row]
+      
+      // Get the photos dictionary from the post
+      if let photos = post["photos"] as? [[String: Any]] {
+        // photos is NOT nil, we can use it!
+        let photo = photos[0]
+        // 2.
+        let originalSize = photo["original_size"] as! [String: Any]
+        // 3.
+        let urlString = originalSize["url"] as! String
+        // 4.
+        let url = URL(string: urlString)
+        cell.photoImageView.af_setImage(withURL: url!)
+      }
       
       return cell
     }
@@ -59,16 +78,4 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-  
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

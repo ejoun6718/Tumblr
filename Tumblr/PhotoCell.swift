@@ -2,15 +2,17 @@
 //  PhotoCell.swift
 //  Tumblr
 //
-//  Created by Hye Lim Joun on 1/31/18.
+//  Created by Hye Lim Joun on 2/3/18.
 //  Copyright © 2018 hyelim. All rights reserved.
 //
 
 import UIKit
 
 class PhotoCell: UITableViewCell {
-
-    override func awakeFromNib() {
+  
+  @IBOutlet weak var photoImageView: UIImageView!
+  
+  override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
@@ -21,12 +23,12 @@ class PhotoCell: UITableViewCell {
         // Configure the view for the selected state
     }
   
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-      let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoCell") as! PhotoCell
-      
-      // Configure YourCustomCell using the outlets that you've defined.
-      
-      return cell
-    }
+  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoCell") as! PhotoCell
+    
+    // Configure YourCustomCell using the outlets that you've defined.
+    
+    return cell
+  }
 
 }
