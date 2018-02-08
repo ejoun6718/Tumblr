@@ -74,19 +74,29 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
   }
+  
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    super.prepare(for: segue, sender: sender)
+    // Get a reference to the PhotoDetailsViewController
+    let vc = segue.destination as! PhotoDetailsViewController
+    // Get the cell that triggered the segue
+    let cell = sender as! UITableViewCell
+    // Get the indexPath of the selected photo
+    let indexPath = tableView.indexPath(for: cell)!
+    let post = posts[indexPath.row]
     
-    // Get the index path from the cell that was tapped
-    let indexPath = tableView.indexPathForSelectedRow
-    // Get the Row of the Index Path and set as index
-    let index = indexPath?.row
-    // Get in touch with the DetailViewController
-    if segue.identifier == "DetailSegue" {
-      let detailViewController = segue.destination as! DetailViewController
-      let selectedPost = posts[index!]
-      // Pass on the data to the Detail ViewController
-      detailViewController.post = selectedPost
+    // Get the photos dictionary from the post
+    if let photos = post["photos"] as? [[String: Any]] {
+      // photos is NOT nil, we can use it!
+      let photo = photos[0]
+      let originalSize = photo["original_size"] as! [String: Any]
+      let urlString = originalSize["url"] as! String
+      
+      // Set the photo property of the PhotoDetailsViewController
+      vc.photoURL = urlString
     }
+  }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+      tableView.deselectRow(at: indexPath, animated: true)
   }
 }
